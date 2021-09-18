@@ -1,0 +1,30 @@
+library(binGroup)
+rates <- seq(0.5,2, by = 0.1)
+population <- 100
+groupsizes <- c(5,10, 20)
+colors <- c("red", "blue", "green")
+for( i in 1: length(groupsizes))
+{
+groupsize = groupsizes[i]
+numtests <- c()
+for( rate in rates)
+{
+p.vec1 <- rep(x = rate/100, times = population)
+hier1 <- hierarchical.desc2(p = p.vec1, I2 = rep(c(groupsize),population/groupsize),
+se = 0.99, sp = 0.99)
+numtests <- append(numtests, hier1$ET)
+
+}
+if( i == 1)
+{
+plot(rates, numtests, main = "Expected tests vs Prevalence rates", 
+xlab="Prevalence rate (%)", ylab = "Number of tests", ylim = c(5,40), col = "red", type = "b", pch = 18)
+}
+else
+{
+lines(rates, numtests, pch=18, col=colors[i], type="b", lty=2)
+}
+}
+#print(numtests)
+legend("topleft", inset = 0.05, legend=c("Groupsize 5", "Groupsize 10", "Groupsize 20"),
+       col=colors, lty=1:2, cex=0.8)
